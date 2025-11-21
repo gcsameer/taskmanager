@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="mb-4">Hello, {{ request.user.username }}!</h2>
+
+<div class="card shadow-sm p-4 mb-4">
+    <h4>Your Tasks</h4>
+    <hr>
+
+    {% for task in tasks %}
+        <div class="d-flex justify-content-between align-items-center mb-2">
+
+            <div>
+                {% if task.completed %}
+                    <span class="text-decoration-line-through text-muted">{{ task.title }}</span>
+                {% else %}
+                    <span>{{ task.title }}</span>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if not task.completed %}
+                    <a class="btn btn-success btn-sm" href="{% url 'task_complete' task.id %}">Complete</a>
+                {% endif %}
+                <a class="btn btn-primary btn-sm" href="{% url 'task_update' task.id %}">Edit</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'task_delete' task.id %}">Delete</a>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted">No tasks yet.</p>
+    {% endfor %}
+</div>
+
+<a class="btn btn-dark" href="{% url 'task_create' %}">Add New Task</a>
+
+{% endblock %}
